@@ -1,0 +1,15 @@
+{
+  "latitude": 39.4143,
+  "longitude": -77.4105,
+  "location_label": "Frederick / Reisterstown, MD",
+  "poll_interval": 60.0,
+  "midi_port_name": "AtmosMIDI",
+  "global_enabled": true,
+  "global_intensity": 1.0,
+  "generative_enabled": true,
+  "generative_motion_depth": 0.25,
+  "generative_event_probability": 0.15,
+  "generative_chaos": 0.1,
+  "theme": "dark",
+  "midi_rate_limit_ms": 20
+}
