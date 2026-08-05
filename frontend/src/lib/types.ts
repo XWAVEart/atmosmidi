@@ -32,11 +32,14 @@ export interface MappingLiveState {
   last_sent: number | null
 }
 
+export type TemperatureUnit = 'celsius' | 'fahrenheit'
+
 export interface AppSettings {
   latitude: number
   longitude: number
   location_label: string
   poll_interval: number
+  temperature_unit: TemperatureUnit
   midi_port_name: string
   global_enabled: boolean
   global_intensity: number

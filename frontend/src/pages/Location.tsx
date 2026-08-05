@@ -229,7 +229,11 @@ export function LocationPage({ weather, onSaved }: Props) {
                 <br />
                 {activeLat.toFixed(3)}, {activeLon.toFixed(3)}
                 {weather?.values.temperature_2m != null && (
-                  <> · {weather.values.temperature_2m.toFixed(1)}°C</>
+                  <>
+                    {' '}
+                    · {weather.values.temperature_2m.toFixed(1)}
+                    {/f/i.test(weather.units?.temperature_2m || '') ? '°F' : '°C'}
+                  </>
                 )}
               </span>
             </div>

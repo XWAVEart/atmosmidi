@@ -14,6 +14,22 @@ from models.settings import AppSettings
 
 logger = logging.getLogger(__name__)
 
+TEMPERATURE_SOURCES = frozenset(
+    {
+        "temperature_2m",
+        "apparent_temperature",
+        "dew_point_2m",
+    }
+)
+
+
+def convert_temperature(value: float, from_unit: str, to_unit: str) -> float:
+    if from_unit == to_unit:
+        return value
+    if from_unit == "celsius" and to_unit == "fahrenheit":
+        return value * 9.0 / 5.0 + 32.0
+    return (value - 32.0) * 5.0 / 9.0
+
 
 DEFAULT_MAPPINGS: list[dict[str, Any]] = [
     {
@@ -222,6 +238,29 @@ class Store:
         self.mappings.append(copy)
         self.save_mappings()
         return copy
+
+    def convert_temperature_mappings(self, from_unit: str, to_unit: str) -> int:
+        """Scale temperature mapping input ranges when °C/°F changes."""
+        if from_unit == to_unit:
+            return 0
+        changed = 0
+        updated: list[Mapping] = []
+        for mapping in self.mappings:
+            if mapping.source not in TEMPERATURE_SOURCES:
+                updated.append(mapping)
+                continue
+            data = mapping.model_dump()
+            data["input_min"] = round(
+                convert_temperature(mapping.input_min, from_unit, to_unit), 2
+            )
+            data["input_max"] = round(
+                convert_temperature(mapping.input_max, from_unit, to_unit), 2
+            )
+            updated.append(Mapping.model_validate(data))
+            changed += 1
+        if changed:
+            self.save_mappings(updated)
+        return changed
 
     def export_presets(self) -> dict[str, Any]:
         return {

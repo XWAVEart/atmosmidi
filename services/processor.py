@@ -247,10 +247,17 @@ class SignalProcessor:
         self._derived["day_night_transition"] = max(transition, twilight)
 
         # Humidity–temperature interaction (heat index-ish / muggy score)
+        # Formula thresholds are Celsius; convert when settings use Fahrenheit.
         temp = g("temperature_2m")
         humidity = g("relative_humidity_2m")
         dew = g("dew_point_2m", temp - (100 - humidity) / 5)
-        muggy = max(0.0, (temp - 18.0)) * (humidity / 100.0) + max(0.0, dew - 12.0)
+        if self._settings.temperature_unit == "fahrenheit":
+            temp_c = (temp - 32.0) * 5.0 / 9.0
+            dew_c = (dew - 32.0) * 5.0 / 9.0
+        else:
+            temp_c = temp
+            dew_c = dew
+        muggy = max(0.0, (temp_c - 18.0)) * (humidity / 100.0) + max(0.0, dew_c - 12.0)
         self._derived["humidity_temp_interaction"] = muggy
 
         self._derived["activity_score"] = (

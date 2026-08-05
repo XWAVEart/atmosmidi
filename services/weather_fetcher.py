@@ -115,6 +115,7 @@ class WeatherFetcher:
             "hourly": ",".join(HOURLY_VARIABLES),
             "timezone": "auto",
             "forecast_days": 1,
+            "temperature_unit": self._settings.temperature_unit,
             "wind_speed_unit": "kmh",
             "precipitation_unit": "mm",
         }

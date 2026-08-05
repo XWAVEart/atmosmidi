@@ -3,6 +3,7 @@
   "longitude": -77.4105,
   "location_label": "Frederick / Reisterstown, MD",
   "poll_interval": 60.0,
+  "temperature_unit": "celsius",
   "midi_port_name": "AtmosMIDI",
   "global_enabled": true,
   "global_intensity": 1.0,

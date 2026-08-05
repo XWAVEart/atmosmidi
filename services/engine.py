@@ -155,6 +155,11 @@ class AtmosEngine:
 
     def update_settings(self, settings: AppSettings) -> AppSettings:
         previous = self.store.settings
+        unit_changed = previous.temperature_unit != settings.temperature_unit
+        if unit_changed:
+            self.store.convert_temperature_mappings(
+                previous.temperature_unit, settings.temperature_unit
+            )
         saved = self.store.save_settings(settings)
         self.weather.update_settings(saved)
         self.processor.update_settings(saved)
@@ -164,7 +169,7 @@ class AtmosEngine:
             previous.latitude != saved.latitude
             or previous.longitude != saved.longitude
         )
-        if location_changed:
+        if location_changed or unit_changed:
             self.weather.request_refresh()
         return saved
 

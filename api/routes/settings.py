@@ -28,7 +28,10 @@ def create_settings_routes(get_engine) -> APIRouter:
     @r.put("/api/settings")
     async def put_settings(body: AppSettings):
         engine = get_engine()
+        previous_unit = engine.settings.temperature_unit
         saved = engine.update_settings(body)
+        if previous_unit != saved.temperature_unit:
+            await engine.notify_mappings_changed()
         return saved
 
 

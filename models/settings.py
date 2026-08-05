@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel, Field, field_validator
 
 from config import (
@@ -11,12 +13,15 @@ from config import (
     MIDI_PORT_NAME,
 )
 
+TemperatureUnit = Literal["celsius", "fahrenheit"]
+
 
 class AppSettings(BaseModel):
     latitude: float = DEFAULT_LATITUDE
     longitude: float = DEFAULT_LONGITUDE
     location_label: str = "Frederick / Reisterstown, MD"
     poll_interval: float = DEFAULT_POLL_INTERVAL
+    temperature_unit: TemperatureUnit = "celsius"
     midi_port_name: str = MIDI_PORT_NAME
     global_enabled: bool = True
     global_intensity: float = Field(default=1.0, ge=0.0, le=2.0)

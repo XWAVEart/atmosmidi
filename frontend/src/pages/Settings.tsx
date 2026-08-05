@@ -116,6 +116,32 @@ export function SettingsPage({ status, onSaved }: Props) {
         </div>
       </Panel>
 
+      <Panel title="Units">
+        <Field label="Temperature">
+          <div className="inline-flex rounded-md border border-[var(--color-line)] bg-black/30 p-1">
+            {(['celsius', 'fahrenheit'] as const).map((unit) => (
+              <button
+                key={unit}
+                type="button"
+                onClick={() => set('temperature_unit', unit)}
+                className={[
+                  'rounded px-4 py-2 text-xs uppercase tracking-[0.18em] transition',
+                  settings.temperature_unit === unit
+                    ? 'bg-[var(--color-panel-2)] text-[var(--color-cyan)]'
+                    : 'text-[var(--color-muted)] hover:text-white',
+                ].join(' ')}
+              >
+                {unit === 'celsius' ? '°C' : '°F'}
+              </button>
+            ))}
+          </div>
+        </Field>
+        <p className="mt-3 text-xs text-[var(--color-muted)]">
+          Switches Open-Meteo temperature fields and converts temperature mapping input ranges.
+          Save settings to apply.
+        </p>
+      </Panel>
+
       <Panel title="MIDI">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Port Name">
