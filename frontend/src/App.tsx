@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { useLive } from './hooks/useLive'
 import { Dashboard } from './pages/Dashboard'
+import { LocationPage } from './pages/Location'
 import { MappingsPage } from './pages/Mappings'
 import { SettingsPage } from './pages/Settings'
 import { api } from './lib/api'
@@ -39,6 +40,12 @@ export default function App() {
                 mappingLive={live.mappingLive}
                 onSettingsChange={refreshStatus}
               />
+            }
+          />
+          <Route
+            path="/location"
+            element={
+              <LocationPage weather={live.weather} onSaved={refreshStatus} />
             }
           />
           <Route

@@ -30,6 +30,7 @@ class WeatherFetcher:
         self._max_backoff = 300.0
         self._on_update: OnWeatherUpdate | None = None
         self._lock = asyncio.Lock()
+        self._wake = asyncio.Event()
 
     @property
     def status(self) -> WeatherStatus:
@@ -76,6 +77,10 @@ class WeatherFetcher:
         async with self._lock:
             return await self._fetch()
 
+    def request_refresh(self) -> None:
+        """Wake the poll loop to fetch immediately (e.g. after location change)."""
+        self._wake.set()
+
     async def _loop(self) -> None:
         while self._running:
             try:
@@ -84,7 +89,14 @@ class WeatherFetcher:
                     result = self._on_update(snapshot)
                     if asyncio.iscoroutine(result):
                         await result
-                await asyncio.sleep(self._settings.poll_interval)
+                self._wake.clear()
+                try:
+                    await asyncio.wait_for(
+                        self._wake.wait(),
+                        timeout=self._settings.poll_interval,
+                    )
+                except asyncio.TimeoutError:
+                    pass
             except asyncio.CancelledError:
                 raise
             except Exception as exc:

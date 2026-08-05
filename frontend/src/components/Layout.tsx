@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { Activity, SlidersHorizontal, Settings2, Radio } from 'lucide-react'
+import { Activity, SlidersHorizontal, Settings2, Radio, Globe2 } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 const links = [
   { to: '/', label: 'Monitor', icon: Activity },
+  { to: '/location', label: 'Location', icon: Globe2 },
   { to: '/mappings', label: 'Mappings', icon: SlidersHorizontal },
   { to: '/settings', label: 'Settings', icon: Settings2 },
 ]

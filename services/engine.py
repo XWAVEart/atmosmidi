@@ -154,11 +154,18 @@ class AtmosEngine:
         }
 
     def update_settings(self, settings: AppSettings) -> AppSettings:
+        previous = self.store.settings
         saved = self.store.save_settings(settings)
         self.weather.update_settings(saved)
         self.processor.update_settings(saved)
         self.midi.port_name = saved.midi_port_name
         self.midi.rate_limit_ms = saved.midi_rate_limit_ms
+        location_changed = (
+            previous.latitude != saved.latitude
+            or previous.longitude != saved.longitude
+        )
+        if location_changed:
+            self.weather.request_refresh()
         return saved
 
     def test_mapping(self, mapping_id: str) -> dict[str, Any]:

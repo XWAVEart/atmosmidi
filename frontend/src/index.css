@@ -76,3 +76,24 @@ textarea {
 .animate-pulse-glow {
   animation: pulse-glow 2.4s ease-in-out infinite;
 }
+
+/* Leaflet dark chrome */
+.leaflet-container {
+  font-family: var(--font-mono);
+  background: var(--color-void);
+}
+
+.leaflet-control-zoom a {
+  background: var(--color-panel) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-line) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(5, 7, 12, 0.75) !important;
+  color: var(--color-muted) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-cyan-dim) !important;
+}
